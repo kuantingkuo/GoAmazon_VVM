@@ -1,10 +1,11 @@
 cases='GoAmazon_20141122T0530_WL6_08'
 exps='L6_0.8'
-tstep=31
+tstep=121
 v1=330; v2=360
 path='/data/W.eddie/VVM/DATA/'
 rc=gsfallow('on')
 num=count_num(cases)
+ttt=math_format('%03g',tstep)
 'reinit'
 'ini -h'
 if num=1
@@ -20,7 +21,11 @@ while(i<=num)
     'set dfile 'i
     xmax=qdims('xmax')
     ymax=qdims('ymax')
+    xmax=8
+    ymax=8
     'set t 'tstep
+    'date %H:%M'
+    time=subwrd(result,1)
     'set lev 0 16000'
     'set x 1'
     'set y 1'
@@ -36,13 +41,13 @@ while(i<=num)
     if i=1
         'draw xlab [K]'
         'draw ylab Height [m]'
-        'draw title `3z`1`be`n at t= 0 min.'
+        'draw title `3z`1`be`n at 'time
         'off'
     endif
     i=i+1
 endwhile
 *'legend r 'num' 'exps' 16 17 18 19'
-'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_'tstep'.png white'
+'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_'ttt'.png white'
 i=1
 while(i<=num)
     case=subwrd(cases,i)
@@ -67,7 +72,7 @@ while(i<=num)
             pres.1=pres.2
         endif
         't'i'=if(lev=z,th.'i'*pow('pres.k'/100000,2/7)-273.15,t'i')'
-        't2qs t'i' 'pres.k
+        't2qs t'i' 'pres.k' '
         'qvs'i'=if(lev=z,qs,qvs'i')'
         k=k+1
     endwhile
@@ -87,4 +92,4 @@ while(i<=num)
     i=i+1
 endwhile
 'legend r 'num' 'exps' 16 17 18 19'
-'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_s_'tstep'.png white'
+'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_s_'ttt'.png white'
