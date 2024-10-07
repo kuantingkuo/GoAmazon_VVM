@@ -1,0 +1,28 @@
+path='/data/W.eddie/AQUA/'
+'reinit'
+'ini -h'
+
+'open 'path'Init_CIN.ctl'
+'open 'path'Init_CIN_each.ctl'
+'open 'path'W2CIN.ctl'
+'open 'path'WI2CIN.ctl'
+'open 'path'W2CIN_each.ctl'
+'open 'path'WI2CIN_each.ctl'
+
+'set lev 1000 750'
+'cin1=if(cin.1<0,cin.1,0)'
+'cin2=if(cin.2<0,cin.2,0)'
+
+'set grads off'
+'set vrange -35 35'
+'set ylint 50'
+'set xlint 10'
+'d cin1'
+'d cin2'
+'draw xlab CIN [J kg`a-1`n]'
+
+'set xlpos 0 t'
+'set vrange -17.5 17.5'
+'set xlint 5'
+'d w.3'
+'d w.5'
