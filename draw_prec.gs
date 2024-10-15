@@ -4,9 +4,10 @@ rc=gsfallow('on')
 num=count_num(cases)
 v1=0
 v2=7
-da=22
-'color 1 7 1 -kind grainbow'
-colors='16 17 18 19 20 21 22 23'
+'color 1 3 1 -kind grainbow'
+colors='16 17 18 19 16 17 18 19'
+colors='9 11 10 2 14 4 3 6'
+styles='2 2 2 2 1 1 1 1'
 'reinit'
 'ini -l'
 i=1
@@ -16,15 +17,35 @@ while(i<=num)
     'open 'path'surface.ctl'
     'set x 1'
     'set y 1'
-    'set time 00Z 02:30Z'
-    'pa=amean(sprec*3600,x='128-da',x='128+da',y='128-da',y='128+da')'
+    'set time 00Z 02Z'
+    'ps=const(sprec,0)'
+    'count=const(sprec,0)'
+    y=99
+    while(y<124)
+        'set y 'y
+        'ps=ps+sumg(sprec*3600,x='223-y',x='32+y')'
+        'count=count+sumg(const(sprec,1),x='223-y',x='32+y')'
+        y=y+1
+    endwhile    
+    'ps=ps+asumg(sprec*3600,x=99,x=156,y=124,y=131)'
+    'count=count+asumg(const(sprec,1),x=99,x=156,y=124,y=131)'
+    y=132
+    while(y<=156)
+        'set y 'y
+        'ps=ps+sumg(sprec*3600,x='y-32',x='287-y')'
+        'count=count+sumg(const(sprec,1),x='y-32',x='287-y')'
+        y=y+1
+    endwhile
+    'pa=ps/count'
     'set grads off'
-    'set xlabs 00:00|00:30|01:00|01:30|02:00|02:30'
+    'set xlabs 00:00|00:30|01:00|01:30|02:00'
     'set ylint 1'
     color=subwrd(colors,i)
     'set ccolor 'color
+    style=subwrd(styles,i)
+    'set cstyle 'style
     'set cmark 0'
-    'set cthick 6'
+    'set cthick 7'
     'set vrange 0 'v2
     'd pa'
     'off'
@@ -36,4 +57,6 @@ while(i<=num)
     'close 1'
     i=i+1
 endwhile
+marks='0 0 0 0 0 0 0 0'
+'legend tr 'num' 'exps' 'colors' 'marks' 'styles
 'gxprint /data/W.eddie/GoAmazon_VVM_Figs/prec.png white'
