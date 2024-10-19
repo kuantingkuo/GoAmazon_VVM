@@ -1,6 +1,7 @@
 cases='GoAmazon_20141122T0530_WL2_01  GoAmazon_20141122T0530_WL2_08  GoAmazon_20141122T0530_WL2_15  GoAmazon_20141122T0530_WL2_22 GoAmazon_20141122T0530_WL6_01  GoAmazon_20141122T0530_WL6_08  GoAmazon_20141122T0530_WL6_15  GoAmazon_20141122T0530_WL6_22'
 exps='L2_0.1 L2_0.8 L2_1.5 L2_2.2 L6_0.1 L6_0.8 L6_1.5 L6_2.2'
 times='00:30 01:00 01:30 02:00'
+*times='00:10 00:20'
 rc=gsfallow('on')
 num=count_num(cases)
 nt=count_num(times)
@@ -12,6 +13,7 @@ q2v2=85
 colors='16 17 18 19 20 21 22 23'
 colors='9 11 10 2 14 4 3 6'
 styles='2 2 2 2 1 1 1 1'
+pibar='0.999  0.999  0.994  0.989  0.982  0.975  0.967  0.959  0.946  0.927  0.901  0.869  0.832  0.795  0.758  0.724  0.691  0.660  0.630  0.601  0.574  0.548  0.523  0.499  0.472  0.436'
 t=1
 while(t<=nt)
 time=subwrd(times,t)
@@ -25,25 +27,33 @@ while(i<=num)
     'set x 1'
     'set y 1'
     'set z 1 19'
+    'pibar='zlike('th',pibar)
+
     'set grads off'
     'set time 'time'Z'
     'date %H%M'
     tttt=subwrd(result,1)
+    tmin=qdims('tmin')
+    if(tmin<=30)
+        t0='t=1'
+    else
+        t0='t-30'
+    endif
     'q1=const(th,0)'
     'count=const(th,0)'
     y=99
     while(y<124)
         'set y 'y
-        'q1=q1+sumg((th-th(t-30))*48,x='223-y',x='32+y')'
+        'q1=q1+sumg((th*pibar-th('t0')*pibar)*48,x='223-y',x='32+y')'
         'count=count+sumg(const(th,1),x='223-y',x='32+y')'
         y=y+1
     endwhile    
-    'q1=q1+asumg((th-th(t-30))*48,x=99,x=156,y=124,y=131)'
+    'q1=q1+asumg((th*pibar-th('t0')*pibar)*48,x=99,x=156,y=124,y=131)'
     'count=count+asumg(const(th,1),x=99,x=156,y=124,y=131)'
     y=132
     while(y<=156)
         'set y 'y
-        'q1=q1+sumg((th-th(t-30))*48,x='y-32',x='287-y')'
+        'q1=q1+sumg((th*pibar-th('t0')*pibar)*48,x='y-32',x='287-y')'
         'count=count+sumg(const(th,1),x='y-32',x='287-y')'
         y=y+1
     endwhile
@@ -91,16 +101,16 @@ while(i<=num)
     y=99
     while(y<124)
         'set y 'y
-        'q2=q2+sumg((qv-qv(t-30))*48*2.501e6/1004.64,x='223-y',x='32+y')'
+        'q2=q2+sumg((qv-qv('t0'))*48*2.501e6/1004.64,x='223-y',x='32+y')'
         'count=count+sumg(const(th,1),x='223-y',x='32+y')'
         y=y+1
     endwhile    
-    'q2=q2+asumg((qv-qv(t-30))*48*2.501e6/1004.64,x=99,x=156,y=124,y=131)'
+    'q2=q2+asumg((qv-qv('t0'))*48*2.501e6/1004.64,x=99,x=156,y=124,y=131)'
     'count=count+asumg(const(th,1),x=99,x=156,y=124,y=131)'
     y=132
     while(y<=156)
         'set y 'y
-        'q2=q2+sumg((qv-qv(t-30))*48*2.501e6/1004.64,x='y-32',x='287-y')'
+        'q2=q2+sumg((qv-qv('t0'))*48*2.501e6/1004.64,x='y-32',x='287-y')'
         'count=count+sumg(const(th,1),x='y-32',x='287-y')'
         y=y+1
     endwhile
