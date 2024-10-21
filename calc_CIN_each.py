@@ -121,7 +121,7 @@ if __name__ == '__main__':
         theta_es[k] = theta_e_calc(pres[k].values, ds.T[k].values, qs)
     Tv = ds.T * (1 + 0.608 * ds.Q)
     CIN = np.zeros(pres.shape)
-    for k in range(1,len(pres)-1):
+    for k in range(1,len(pres)):
         if (theta_e[k]<theta_es[:k]).all():
             CIN[k] = np.nan
             continue
