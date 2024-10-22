@@ -38,7 +38,7 @@ def es_calc(temp):
 
     return es
 
-#@numba.njit
+@numba.njit
 def lhs_func(T, theta, rhs):
 #    lhs = (34.494-(4924.99/(T-36.05)))/np.power(T-168.15, 1.57) - 1004.64/287.04 * np.log(T)
     P_lcl = np.power(T/theta, 1004.64/287.04) * 100000.
@@ -57,7 +57,7 @@ def calc_lcl(theta, q):
         print("No solution found within the specified range.")
         sys.exit()
 
-#@numba.njit
+@numba.njit
 def theta_e_calc(press, temp, q):
 # https://github.com/NOAA-GFDL/MDTF-diagnostics/blob/main/diagnostics/precip_buoy_diag/vert_cython.pyx#L295
 # Bolton (1980)
@@ -82,7 +82,7 @@ def theta_e_calc(press, temp, q):
     theta_e = temp * np.power((pref / press), chi_e) * np.exp(((3.376 / TL) - 0.00254) * r * 1000. * (1. + (0.81 * r)))
     return theta_e
 
-#@numba.njit
+@numba.njit
 def solve_T_moist(T, theta_e, pres, q):
     es = es_calc(T)
     q = np.minimum(q, 0.622*es / (pres - (1-0.622)*es ))
