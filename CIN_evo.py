@@ -138,7 +138,7 @@ def main_parallel(nc):
             break
         CIN += np.where(LFC_flag==0, CIN_temp, 0.)
     basename = nc.split('/')[-1]
-    outname = f'/data/W.eddie/GoAmazon_VVM_temp/{basename.replace("L.Thermodynamic", "CIN")}.npy'
+    outname = f'/data/W.eddie/GoAmazon_VVM_temp/{basename.replace("L.Thermodynamic", "CIN").replace(".nc", ".npy")}'
     np.save(outname, CIN)
     return
 
