@@ -1,14 +1,31 @@
-cases='GoAmazon_20141122T0530_WL2_01  GoAmazon_20141122T0530_WL2_08  GoAmazon_20141122T0530_WL2_15  GoAmazon_20141122T0530_WL2_22 GoAmazon_20141122T0530_WL6_01  GoAmazon_20141122T0530_WL6_08  GoAmazon_20141122T0530_WL6_15  GoAmazon_20141122T0530_WL6_22'
-exps='L2_0.1 L2_0.8 L2_1.5 L2_2.2 L6_0.1 L6_0.8 L6_1.5 L6_2.2'
+*cases='GoAmazon_20141122T0530_WL2_01  GoAmazon_20141122T0530_WL2_08  GoAmazon_20141122T0530_WL2_15  GoAmazon_20141122T0530_WL2_22 GoAmazon_20141122T0530_WL6_01  GoAmazon_20141122T0530_WL6_08  GoAmazon_20141122T0530_WL6_15  GoAmazon_20141122T0530_WL6_22'
+*exps='L2_0.1 L2_0.8 L2_1.5 L2_2.2 L6_0.1 L6_0.8 L6_1.5 L6_2.2'
+cases='GoAmazon_20141122T0530_WL2_01_small GoAmazon_20141122T0530_WL2_08_small GoAmazon_20141122T0530_WL2_15_small GoAmazon_20141122T0530_WL2_22_small'
+exps='L2_0.1 L2_0.8 L2_1.5 L2_2.2'
+colors='9 11 10 2'
+styles='2 2 2 2'
 rc=gsfallow('on')
 num=count_num(cases)
+Wsiz=8
+R=math_nint((math_sqrt(66*Wsiz*Wsiz-4*Wsiz+1)+1)/2-Wsiz)
+radi=Wsiz/2+R
+x.1=128-radi
+x.2=128-Wsiz/2
+x.3=127+Wsiz/2
+x.4=127+radi
+y.1=128-radi
+y.2=128-Wsiz/2
+y.3=127+Wsiz/2
+y.4=127+radi
+
 v1=0
 v2=7
-'color 1 3 1 -kind grainbow'
-colors='16 17 18 19 16 17 18 19'
-colors='9 11 10 2 14 4 3 6'
-styles='2 2 2 2 1 1 1 1'
+*'color 1 3 1 -kind grainbow'
+*colors='16 17 18 19 16 17 18 19'
+*colors='9 11 10 2 14 4 3 6'
+*styles='2 2 2 2 1 1 1 1'
 'reinit'
+'set mproj off'
 'ini -l'
 i=1
 while(i<=num)
@@ -17,26 +34,23 @@ while(i<=num)
     'open 'path'surface.ctl'
     'set x 1'
     'set y 1'
+    'dlon=lon(x=2)-lon(x=1)'
+    'dlat=lat(y=2)-lat(y=1)'
+    'lon0=lon(x=1)'
+    'lat0=lat(y=1)'
+    'set x 1 256'
+    'set y 1 256'
+    'xgrid=(lon-lon0)/dlon+1'
+    'ygrid=(lat-lat0)/dlat+1'
+    'flag=const(sprec,1)'
+    'flag=if((ygrid+xgrid)<('y.1+x.2'),-1,flag))'
+    'flag=if((ygrid+xgrid)>('y.3+x.4'),-1,flag))'
+    'flag=if((ygrid-xgrid)<('y.1-x.3'),-1,flag))'
+    'flag=if((ygrid-xgrid)>('y.4-x.2'),-1,flag))'
+    'set x 1'
+    'set y 1'
     'set time 00Z 02Z'
-    'ps=const(sprec,0)'
-    'count=const(sprec,0)'
-    y=99
-    while(y<124)
-        'set y 'y
-        'ps=ps+sumg(sprec*3600,x='223-y',x='32+y')'
-        'count=count+sumg(const(sprec,1),x='223-y',x='32+y')'
-        y=y+1
-    endwhile    
-    'ps=ps+asumg(sprec*3600,x=99,x=156,y=124,y=131)'
-    'count=count+asumg(const(sprec,1),x=99,x=156,y=124,y=131)'
-    y=132
-    while(y<=156)
-        'set y 'y
-        'ps=ps+sumg(sprec*3600,x='y-32',x='287-y')'
-        'count=count+sumg(const(sprec,1),x='y-32',x='287-y')'
-        y=y+1
-    endwhile
-    'pa=ps/count'
+    'pa=amean(maskout(sprec*3600,flag),x='x.1',x='x.4',y='y.1',y='y.4')'
     'set grads off'
     'set xlabs 00:00|00:30|01:00|01:30|02:00'
     'set ylint 1'
@@ -57,6 +71,7 @@ while(i<=num)
     'close 1'
     i=i+1
 endwhile
-marks='0 0 0 0 0 0 0 0'
+*marks='0 0 0 0 0 0 0 0'
+marks='0 0 0 0'
 'legend tr 'num' 'exps' 'colors' 'marks' 'styles
-'gxprint /data/W.eddie/GoAmazon_VVM_Figs/prec.png white'
+'gxprint /data/W.eddie/GoAmazon_VVM_Figs/prec_small.png white'
