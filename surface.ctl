@@ -1,0 +1,19 @@
+DSET ^/data/W.eddie/VVM/DATA/GoAmazon_20141122T0530_WL6_22/archive/GoAmazon_20141122T0530_WL6_22.C.Surface-%tm6.nc 
+DTYPE netcdf 
+OPTIONS template 
+TITLE surface variables 
+UNDEF 9.96921e+36 
+CACHESIZE 10000000 
+XDEF 256 LINEAR 1 1 
+YDEF 256 LINEAR 1 1 
+ZDEF 1 LEVELS 0 
+TDEF 181 LINEAR 00:00Z01JAN2000 1mn 
+VARS 7
+uw=>uw 1 t,y,x GoAmazon_20141122T0530_WL6_22
+wv=>wv 1 t,y,x GoAmazon_20141122T0530_WL6_22
+wth=>wth 1 t,y,x GoAmazon_20141122T0530_WL6_22
+wqv=>wqv 1 t,y,x GoAmazon_20141122T0530_WL6_22
+sprec=>sprec 1 t,y,x GoAmazon_20141122T0530_WL6_22
+tg=>tg 1 t,y,x GoAmazon_20141122T0530_WL6_22
+olr=>olr 1 t,y,x GoAmazon_20141122T0530_WL6_22
+ENDVARS

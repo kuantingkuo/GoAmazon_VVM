@@ -1,5 +1,5 @@
-cases='GoAmazon_20141122T0530_WL6_08'
-exps='L6_0.8'
+cases='GoAmazon_20141122T0530_WL2_01  GoAmazon_20141122T0530_WL2_08  GoAmazon_20141122T0530_WL2_15  GoAmazon_20141122T0530_WL2_22 GoAmazon_20141122T0530_WL6_01  GoAmazon_20141122T0530_WL6_08  GoAmazon_20141122T0530_WL6_15  GoAmazon_20141122T0530_WL6_22'
+exps='L2_0.1 L2_0.8 L2_1.5 L2_2.2 L6_0.1 L6_0.8 L6_1.5 L6_2.2'
 tstep=121
 v1=330; v2=360
 path='/data/W.eddie/VVM/DATA/'
@@ -7,7 +7,7 @@ rc=gsfallow('on')
 num=count_num(cases)
 ttt=math_format('%03g',tstep)
 'reinit'
-'ini -h'
+'ini'
 if num=1
     'set rgb 16 0 0 0'
 else
@@ -19,18 +19,18 @@ while(i<=num)
     exp=subwrd(exps,i)
     'open 'path%case'/gs_ctl_files/thermodynamic.ctl'
     'set dfile 'i
-    xmax=qdims('xmax')
-    ymax=qdims('ymax')
-    xmax=8
-    ymax=8
+    xmin=124
+    xmax=131
+    ymin=124
+    ymax=131
     'set t 'tstep
     'date %H:%M'
     time=subwrd(result,1)
     'set lev 0 16000'
     'set x 1'
     'set y 1'
-    'tha'i'=amean(th.'i',x=1,x='xmax',y=1,y='ymax')'
-    'qva'i'=amean(qv.'i',x=1,x='xmax',y=1,y='ymax')'
+    'tha'i'=amean(th.'i',x='xmin',x='xmax',y='ymin',y='ymax')'
+    'qva'i'=amean(qv.'i',x='xmin',x='xmax',y='ymin',y='ymax')'
     'the'i'=tha'i'+2.5e6*qva'i'/1004.67'
     'set grads off'
     'set vrange 'v1' 'v2
@@ -80,7 +80,7 @@ while(i<=num)
     'thes=th.'i'+2.5e6*qvs'i'/1004.67'
     'set x 1'
     'set y 1'
-    'thesa'i'=amean(thes,x=1,x='xmax',y=1,y='ymax')'
+    'thesa'i'=amean(thes,x='xmin',x='xmax',y='ymin',y='ymax')'
 
     'set grads off'
     'set vrange 'v1' 'v2
@@ -91,5 +91,5 @@ while(i<=num)
     'd thesa'i
     i=i+1
 endwhile
-'legend r 'num' 'exps' 16 17 18 19'
+'legend r 'num' 'exps' 16 17 18 19 20 21 22 23'
 'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_s_'ttt'.png white'
