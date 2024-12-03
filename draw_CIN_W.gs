@@ -1,19 +1,28 @@
+files1='Init_CIN_each test_dry2_Init_CIN_each Init_CIN_const'
+files2='W2CIN_each test_dry2_W2CIN_each W2CIN_const'
+exps='CTRL dry const'
 path='/data/W.eddie/GoAmazon_VVM/'
+rc=gsfallow('on')
+num=count_num(files1)
+n=1
+while(n<=num)
+file1=subwrd(files1,n)
+file2=subwrd(files2,n)
+exp=subwrd(exps,n)
 'reinit'
 'ini -h'
 'set parea 3 8 0.8 7.5'
 
-'open 'path'test_dry2_Init_CIN_each.ctl'
-'open 'path'test_dry2_W2CIN_each.ctl'
-'open 'path'test_dry2_WI2CIN_each.ctl'
+'open 'path%file1'.ctl'
+'open 'path%file2'.ctl'
 
-'set lev 997 810'
+'set lev 0 4'
 'cin=if(max(cin.1,z=0,z+0)>1e-3,0,cin.1)'
 
 'set grads off'
 'set vrange -127.5 127.5'
 'set xlevs -120 -90 -60 -30 0'
-'set ylint 50'
+'set ylint 1'
 'set cmark 3'
 'set cthick 8'
 'set ccolor 1'
@@ -22,7 +31,8 @@ path='/data/W.eddie/GoAmazon_VVM/'
 'set string 1 bc 5'
 'set strsiz 0.16 0.2'
 'draw string 4.25 0.15 CIN [J kg`a-1`n]'
-'draw ylab Pressure [hPa]'
+'draw ylab Height [km]'
+'draw title 'exp
 'off'
 
 'set font 0'
@@ -49,5 +59,10 @@ path='/data/W.eddie/GoAmazon_VVM/'
 'd const(w.2,0,-a)'
 
 'legend tl 2 `1CIN `0W 1 2 3 2'
-'gxprint /data/W.eddie/GoAmazon_VVM_Figs/test_dry2_CIN_W.png white'
-*'gxprint /data/W.eddie/GoAmazon_VVM_Figs/CIN_W.svg white'
+pull xxx
+'gxprint /data/W.eddie/GoAmazon_VVM_Figs/CIN_W_'exp'.png white'
+*'gxprint /data/W.eddie/GoAmazon_VVM_Figs/CIN_W_'exp'.svg white'
+'close 2'
+'close 1'
+n=n+1
+endwhile

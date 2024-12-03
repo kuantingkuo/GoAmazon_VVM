@@ -45,6 +45,7 @@ while(n<=num)
     'set lev 0 4'
     'set vrange 'v1' 'v2
     'set xlint 5'
+    'set ylint 1'
     'set cmark 0'
     'set cthick 9'
     'set ccolor 'col
@@ -53,14 +54,13 @@ while(n<=num)
         'draw xlab [K]'
         'draw ylab Height [km]'
         'draw title Initial Profile'
+        'off'
     endif
-    'off'
     'set cmark 0'
     'set cthick '17-5*n
     'set ccolor 'col
     'set cstyle 2'
     'd thes'
-    pull xxx
     n=n+1
 endwhile
 'set font 5'
