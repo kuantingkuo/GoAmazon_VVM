@@ -1,32 +1,37 @@
-pattern='GoAmazon_20141122T0530_dry2_WL?_??'
+pattern='GoAmazon_20141122T0530_circle_WL?_??'
 Wsiz=8
 path='/data/W.eddie/VVM/DATA/'
 cases=sys('ls -d 'path%pattern'|awk -F/ ''{print $NF}''')
 say cases
-exp_tag='dry2'
+exp_tag='Circle_const'
 exps='L2_0.1 L2_0.8 L2_1.5 L2_2.2 L6_0.1 L6_0.8 L6_1.5 L6_2.2'
 rc=gsfallow('on')
 num=count_num(cases)
 say num
-*'color 1 'num-1' 1 -kind jet'
+*'color 1 'num-1' 1 -kind dark_jet'
 *colors=range(16,16+num-1)
-*say colors
-R=math_nint((math_sqrt(66*Wsiz*Wsiz-4*Wsiz+1)+1)/2-Wsiz)
-radi=Wsiz/2+R
-x.1=128-radi
-x.2=128-Wsiz/2
-x.3=127+Wsiz/2
-x.4=127+radi
-y.1=128-radi
-y.2=128-Wsiz/2
-y.3=127+Wsiz/2
-y.4=127+radi
-
-v1=0
-v2=7
+*'color 1 3 1 -kind dark_grainbow'
 *colors='16 17 18 19 16 17 18 19'
 colors='9 11 10 2 14 4 3 6'
 styles='2 2 2 2 1 1 1 1'
+*R=math_nint((math_sqrt(66*Wsiz*Wsiz-4*Wsiz+1)+1)/2-Wsiz)
+*radi=Wsiz/2+R
+*x.1=128-radi
+*x.2=128-Wsiz/2
+*x.3=127+Wsiz/2
+*x.4=127+radi
+*y.1=128-radi
+*y.2=128-Wsiz/2
+*y.3=127+Wsiz/2
+*y.4=127+radi
+radi=math_sqrt(Wsiz/2*Wsiz/2*32)
+x.1=127.5-radi
+x.4=127.5+radi
+y.1=x.1
+y.4=x.4
+
+v1=0
+v2=7
 'reinit'
 'set mproj off'
 'ini -l'
@@ -47,10 +52,12 @@ while(i<=num)
     'xgrid=(lon-lon0)/dlon+1'
     'ygrid=(lat-lat0)/dlat+1'
     'flag=const(sprec,1)'
-    'flag=if((ygrid+xgrid+0.1)<('y.1+x.2'),-1,flag))'
-    'flag=if((ygrid+xgrid-0.1)>('y.3+x.4'),-1,flag))'
-    'flag=if((ygrid-xgrid+0.1)<('y.1-x.3'),-1,flag))'
-    'flag=if((ygrid-xgrid-0.1)>('y.4-x.2'),-1,flag))'
+*    'flag=if((ygrid+xgrid+0.1)<('y.1+x.2'),-1,flag))'
+*    'flag=if((ygrid+xgrid-0.1)>('y.3+x.4'),-1,flag))'
+*    'flag=if((ygrid-xgrid+0.1)<('y.1-x.3'),-1,flag))'
+*    'flag=if((ygrid-xgrid-0.1)>('y.4-x.2'),-1,flag))'
+    'R=sqrt(pow(xgrid-127.5,2)+pow(ygrid-127.5,2))'
+    'flag=if(R>'radi',-1,flag)'
     'set x 1'
     'set y 1'
     'set time 00Z 02Z'
