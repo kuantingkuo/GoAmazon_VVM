@@ -1,23 +1,27 @@
-pattern='GoAmazon_20141122T0530_circle_WL?_??'
+exp_tag='line58'
+pattern='GoAmazon_'exp_tag'_??_t06'
 Wsiz=8
 path='/data/W.eddie/VVM/DATA/'
 cases=sys('ls -d 'path%pattern'|awk -F/ ''{print $NF}''')
 say cases
-exp_tag='Circle_const'
-exps='L2_0.1 L2_0.8 L2_1.5 L2_2.2 L6_0.1 L6_0.8 L6_1.5 L6_2.2'
+exps='02 04 06 08 10 12 14 16 18 20 22 24'
+exps='0.06_0.12 0.16_0.32 0.29_0.51 0.36_0.77 0.51_1.03 0.66_1.31 0.83_1.64 0.99_1.97 1.17_2.35 1.35_2.77 1.55_3.22 1.76_3.70'
 rc=gsfallow('on')
 num=count_num(cases)
 say num
 radi=Wsiz/2
-x.1=127.5-radi
-x.4=127.5+radi
+x.1=64.5-radi
+x.4=64.5+radi
 y.1=x.1
 y.4=x.4
 
 v1=0
-v2=110
-colors='9 11 10 2 14 4 3 6'
-styles='2 2 2 2 1 1 1 1'
+v2=27
+*colors='9 11 10 2 14 4 3 6'
+*styles='2 2 2 2 1 1 1 1'
+'color 2 'num' 1 -kind dark_jet'
+colors=range(16,num+16-1)
+styles='1 1 1 1 1 1 1 1 1 1 1 1'
 'reinit'
 'set mproj off'
 'ini -l'
@@ -26,19 +30,9 @@ while(i<=num)
     case=subwrd(cases,i)
     path='/data/W.eddie/VVM/DATA/'case'/gs_ctl_files/'
     'open 'path'surface.ctl'
-    'set x 1'
-    'set y 1'
-    'dlon=lon(x=2)-lon(x=1)'
-    'dlat=lat(y=2)-lat(y=1)'
-    'lon0=lon(x=1)'
-    'lat0=lat(y=1)'
-    'set x 'x.1' 'x.4
-    'set y 'y.1' 'y.4
-    'set t 1'
-    'xgrid=(lon-lon0)/dlon+1'
-    'ygrid=(lat-lat0)/dlat+1'
+    'xygrid'
     'flag=const(sprec,1)'
-    'R=sqrt(pow(xgrid-127.5,2)+pow(ygrid-127.5,2))'
+    'R=sqrt(pow(xgrid-64.5,2)+pow(ygrid-64.5,2))'
     'flag=if(R>'radi',-1,flag)'
     'set x 1'
     'set y 1'
@@ -79,7 +73,7 @@ while(i<=num)
     'close 1'
     i=i+1
 endwhile
-marks='0 0 0 0 0 0 0 0'
+marks='0 0 0 0 0 0 0 0 0 0 0 0'
 *marks='0 0 0 0'
 'legend tr 'num' 'exps' 'colors' 'marks' 'styles
 'gxprint /data/W.eddie/GoAmazon_VVM_Figs/prec_'exp_tag'_core.png white'

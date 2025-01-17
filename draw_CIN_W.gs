@@ -1,6 +1,9 @@
-files1='Init_CIN_each test_dry2_Init_CIN_each Init_CIN_const'
-files2='W2CIN_each test_dry2_W2CIN_each W2CIN_const'
-exps='CTRL dry const'
+files1='Init_CIN_each Init_CIN_lin58 Init_CIN_const'
+files1='Init_CIN_lin58'
+files2='W2CIN_each W2CIN_lin58 W2CIN_const'
+files2='W2CIN_lin58'
+exps='CTRL linear const'
+exps='linear'
 path='/data/W.eddie/GoAmazon_VVM/'
 rc=gsfallow('on')
 num=count_num(files1)
@@ -59,7 +62,6 @@ exp=subwrd(exps,n)
 'd const(w.2,0,-a)'
 
 'legend tl 2 `1CIN `0W 1 2 3 2'
-pull xxx
 'gxprint /data/W.eddie/GoAmazon_VVM_Figs/CIN_W_'exp'.png white'
 *'gxprint /data/W.eddie/GoAmazon_VVM_Figs/CIN_W_'exp'.svg white'
 'close 2'

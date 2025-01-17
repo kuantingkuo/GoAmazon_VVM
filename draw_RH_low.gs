@@ -34,33 +34,25 @@ while(n<=num)
     'T='zlike('th',T)
     'Q='zlike('th',Q)
     'P='zlike('th',pres)
-*    'the=T*pow(100000/P,2/7)+2.5e6*Q/1004.67'
-    'the='thetae('T','P','Q')
     'Tc=T-273.15'
-    't2qs Tc P'
-    'thes='thetae('T','P','qs')
+    'tpq2rh Tc P Q'
 
-    v1=335; v2=365
+    v1=55; v2=109
     'set grads off'
     'set lev 0 4'
     'set vrange 'v1' 'v2
-    'set xlint 5'
+    'set xlint 10'
     'set ylint 1'
     'set cmark 0'
     'set cthick 9'
     'set ccolor 'col
-    'd the'
+    'd rh'
     if(n=1)
-        'draw xlab [K]'
+        'draw xlab [%]'
         'draw ylab Height [km]'
-        'draw title Initial Profile'
+        'draw title Relative Humidity'
         'off'
     endif
-    'set cmark 0'
-    'set cthick '17-5*n
-    'set ccolor 'col
-    'set cstyle 2'
-    'd thes'
     n=n+1
 endwhile
 revexp=subwrd(exps,num)
@@ -70,13 +62,5 @@ while(i>=1)
     i=i-1
 endwhile
 'set font 5'
-'legend r 3 'revexp' 1 60 50'
-'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_inic_low.png white'
-
-function thetae(t,p,q)
-    'r='q'/(1-'q')'
-    'e='p'*r/(0.622+r)'
-    'TL=(2840/(3.5*log('t')-log(e/100)-4.805))+55'
-    'chie=0.2854*(1-0.28*r)'
-    'thetae='t'*pow(100000/'p',chie)*exp((3.376/TL-0.00254)*r*1000*(1+0.81*r))'
-    return 'thetae'
+'legend tr 3 'revexp' 1 60 50'
+'gxprint /data/W.eddie/GoAmazon_VVM_Figs/RH_inic_low.png white'

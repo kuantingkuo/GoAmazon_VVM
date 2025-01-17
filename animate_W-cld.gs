@@ -1,9 +1,14 @@
-pattern='GoAmazon_20141122T0530_circle_WL?_??'
+pattern='GoAmazon_ctrl_??_t06'
 path='/data/W.eddie/VVM/DATA/'
 cases=sys('ls -d 'path%pattern'|awk -F/ ''{print $NF}''')
-exp_tag='Circle_const'
-exps='L2_0.1 L2_0.8 L2_1.5 L2_2.2 L6_0.1 L6_0.8 L6_1.5 L6_2.2'
-x1=99;x2=156
+say cases
+exp_tag='Circle_ctrl'
+exps='02 04 06 08 10 12 14 16 18 20 22 24'
+x1=52;x2=77
+x0=64.5
+dx=0.5
+xkm1=(x1-x0)*dx
+xkm2=(x2-x0)*dx
 rc=gsfallow('on')
 num=count_num(cases)
 n=1
@@ -17,24 +22,24 @@ exp=subwrd(exps,n)
 'open 'path%case'/gs_ctl_files/thermodynamic.ctl'
 'open 'path%case'/gs_ctl_files/dynamic.ctl'
 'set x 'x1' 'x2
-'set y 128'
+'set y 64'
 'set lev 0 6000'
 
 t=1
 while(t<=121)
 'set t 't
-'cld=mean(qc+qi,y=124,y=131)*1e3'
-'rain=mean(qr,y=124,y=131)*1e3'
-'wa=mean(w.2,y=124,y=131)'
+'cld=(qc+qi)*1e3'
+'rain=qr*1e3'
+'wa=w.2'
 
 'c'
 'on'
 'set grads off'
 'set parea 1.45 7.95 1 7.75'
-'set xaxis 'x1/2' 'x2/2
+'set xaxis 'xkm1' 'xkm2
 'set yaxis 0 6 1'
-'color 0 2 2e-1 -kind precip'
-levcol=getlevcol(0,2,2e-1)
+'color -levs 0.1 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 -kind precip'
+levcol=getlevcol(0,5,0.5)
 'd rain'
 'date %H:%M'
 time=subwrd(result,1)
@@ -45,7 +50,7 @@ time=subwrd(result,1)
 'off'
 *'color 0 1 1e-1 -kind (255,255,255,50)->(0,0,0,50)'
 *levcol=getlevcol(0,1,1e-1)
-'color 0 1 1e-1 -kind black->black -gxout contour'
+'color -levs 0.1 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 -kind black->black -gxout contour'
 'set clab masked'
 'set cthick 3'
 'd cld'
