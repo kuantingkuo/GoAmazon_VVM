@@ -29,7 +29,7 @@ while(n<=num)
     endwhile
     'set x 1'
     'set y 1'
-    'set z 1 12'
+    'set z 2 12'
     'set t 1'
     'T='zlike('th',T)
     'Q='zlike('th',Q)
@@ -42,7 +42,8 @@ while(n<=num)
 
     v1=335; v2=365
     'set grads off'
-    'set lev 0 4'
+*    'set lev 0 4'
+    'set z 2 11.3135'
     'set vrange 'v1' 'v2
     'set xlint 5'
     'set ylint 1'

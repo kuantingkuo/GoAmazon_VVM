@@ -1,9 +1,9 @@
-pattern='GoAmazon_20141122T0530_circle_WL?_??'
+pattern='GoAmazon_20141122T0530_circle_KE_WL?_??'
 Wsiz=8
+exp_tag='Circle_KE_const'
 path='/data/W.eddie/VVM/DATA/'
 cases=sys('ls -d 'path%pattern'|awk -F/ ''{print $NF}''')
 say cases
-exp_tag='Circle_const'
 exps='L2_0.1 L2_0.8 L2_1.5 L2_2.2 L6_0.1 L6_0.8 L6_1.5 L6_2.2'
 rc=gsfallow('on')
 num=count_num(cases)
@@ -24,9 +24,10 @@ styles='2 2 2 2 1 1 1 1'
 *y.2=128-Wsiz/2
 *y.3=127+Wsiz/2
 *y.4=127+radi
-radi=math_sqrt(Wsiz/2*Wsiz/2*32)
-x.1=127.5-radi
-x.4=127.5+radi
+*radi=math_sqrt(Wsiz/2*Wsiz/2*32)
+radi=Wsiz/2+Wsiz
+x.1=64.5-radi
+x.4=64.5+radi
 y.1=x.1
 y.4=x.4
 
@@ -56,7 +57,7 @@ while(i<=num)
 *    'flag=if((ygrid+xgrid-0.1)>('y.3+x.4'),-1,flag))'
 *    'flag=if((ygrid-xgrid+0.1)<('y.1-x.3'),-1,flag))'
 *    'flag=if((ygrid-xgrid-0.1)>('y.4-x.2'),-1,flag))'
-    'R=sqrt(pow(xgrid-127.5,2)+pow(ygrid-127.5,2))'
+    'R=sqrt(pow(xgrid-64.5,2)+pow(ygrid-64.5,2))'
     'flag=if(R>'radi',-1,flag)'
     'set x 1'
     'set y 1'

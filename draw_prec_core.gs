@@ -1,11 +1,11 @@
-exp_tag='line58'
+exp_tag='ctrl'
 pattern='GoAmazon_'exp_tag'_??_t06'
 Wsiz=8
 path='/data/W.eddie/VVM/DATA/'
 cases=sys('ls -d 'path%pattern'|awk -F/ ''{print $NF}''')
 say cases
-exps='02 04 06 08 10 12 14 16 18 20 22 24'
-exps='0.06_0.12 0.16_0.32 0.29_0.51 0.36_0.77 0.51_1.03 0.66_1.31 0.83_1.64 0.99_1.97 1.17_2.35 1.35_2.77 1.55_3.22 1.76_3.70'
+exps='08 10 12 14 16 18 20 22 24'
+exps='0.36(0.77) 0.51(1.03) 0.66(1.31) 0.83(1.64) 0.99(1.97) 1.17(2.35) 1.35(2.77) 1.55(3.22) 1.76(3.70)'
 rc=gsfallow('on')
 num=count_num(cases)
 say num
@@ -73,7 +73,20 @@ while(i<=num)
     'close 1'
     i=i+1
 endwhile
-marks='0 0 0 0 0 0 0 0 0 0 0 0'
-*marks='0 0 0 0'
-'legend tr 'num' 'exps' 'colors' 'marks' 'styles
+num=num/2
+exp1=''
+exp2=''
+color1=''
+color2=''
+i=1
+while(i<=num)
+    exp1=exp1%subwrd(exps,i)' '
+    exp2=exp2%subwrd(exps,i+num)' '
+    color1=color1%subwrd(colors,i)' '
+    color2=color2%subwrd(colors,i+num)' '
+    i=i+1
+endwhile
+'legend tc 'num' 'exp1' 'color1
+'legend tr 'num' 'exp2' 'color2
 'gxprint /data/W.eddie/GoAmazon_VVM_Figs/prec_'exp_tag'_core.png white'
+'gxprint /data/W.eddie/GoAmazon_VVM_Figs/prec_'exp_tag'_core.svg white'

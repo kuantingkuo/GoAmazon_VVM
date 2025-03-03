@@ -1,24 +1,28 @@
-exp_tag='ctrl'
-pattern='GoAmazon_'exp_tag'_??_t06'
-exps='0.06_0.12 0.16_0.32 0.29_0.51 0.36_0.77 0.51_1.03 0.66_1.31 0.83_1.64 0.99_1.97 1.17_2.35 1.35_2.77 1.55_3.22 1.76_3.70'
+exp_tags='ctrl line58 const'
+exps='0.06(0.12) 0.16(0.32) 0.29(0.51) 0.36(0.77) 0.51(1.03) 0.66(1.31) 0.83(1.64) 0.99(1.97) 1.17(2.35) 1.35(2.77) 1.55(3.22) 1.76(3.70)'
 path='/data/W.eddie/VVM/DATA/'
-cases=sys('ls -d 'path%pattern'|awk -F/ ''{print $NF}''')
 rc=gsfallow('on')
-num=count_num(cases)
 radi=4
 x.1=64.5-radi
 x.4=64.5+radi
 y.1=x.1
 y.4=x.4
+tag=1
+while(tag<=3)
+exp_tag=subwrd(exp_tags,tag)
+
+pattern='GoAmazon_'exp_tag'_??_t06'
+cases=sys('ls -d 'path%pattern'|awk -F/ ''{print $NF}''')
+num=count_num(cases)
 'reinit'
 'set mproj off'
 'ini -l'
-i=1
+i=7
 while(i<=num)
     case=subwrd(cases,i)
     path='/data/W.eddie/VVM/DATA/'case'/gs_ctl_files/'
     'open 'path'thermodynamic.ctl'
-    if(i=1)
+    if(i=7)
     'xygrid'
     'flag=const(th,1)'
     'R=sqrt(pow(xgrid-64.5,2)+pow(ygrid-64.5,2))'
@@ -39,7 +43,7 @@ while(i<=num)
     'set grads off'
     'set xlabs 00:00|00:30|01:00|01:30|02:00'
     'set yaxis 'z0' 'z1
-    'color -levs -0.015 -0.014 -0.013 -0.012 -0.011 -0.01 -0.009 -0.008 -0.007 -0.006 -0.005 -0.004 -0.003 -0.002 -0.001 0.001 0.002 0.003 0.004 0.005 0.006 0.007 0.008 0.009 0.01 0.011 0.012 0.013 0.014 0.015 -kind blue-(14)->white->orange->red'
+*    'color -levs -0.015 -0.014 -0.013 -0.012 -0.011 -0.01 -0.009 -0.008 -0.007 -0.006 -0.005 -0.004 -0.003 -0.002 -0.001 0.001 0.002 0.003 0.004 0.005 0.006 0.007 0.008 0.009 0.01 0.011 0.012 0.013 0.014 0.015 -kind blue-(14)->white->orange->red'
     'd buo'
     'cbar3 [m s`a-2`n]'
     exp=subwrd(exps,i)
@@ -52,7 +56,10 @@ while(i<=num)
     'set clab masked'
     'set clevs 1e-5 1e-4 1e-3 1e-2'
     'd cldc' 
+    exit
     'gxprint /data/W.eddie/GoAmazon_VVM_Figs/Buo_evo_core_'exp_tag'_'exp'.png white'
     'close 1'
     i=i+1
+endwhile
+tag=tag+1
 endwhile

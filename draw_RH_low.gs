@@ -29,7 +29,7 @@ while(n<=num)
     endwhile
     'set x 1'
     'set y 1'
-    'set z 1 12'
+    'set z 2 12'
     'set t 1'
     'T='zlike('th',T)
     'Q='zlike('th',Q)

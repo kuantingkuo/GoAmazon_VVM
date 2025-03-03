@@ -1,4 +1,4 @@
-DSET ^/data/W.eddie/VVM/DATA/GoAmazon_20141122T0530_WL6_22/archive/GoAmazon_20141122T0530_WL6_22.L.Thermodynamic-%tm6.nc 
+DSET ^/data/W.eddie/VVM/DATA/GoAmazon_ctrl_02_t06/archive/GoAmazon_ctrl_02_t06.L.Thermodynamic-000000.nc
 DTYPE netcdf 
 OPTIONS template 
 TITLE thermodynamic variables 

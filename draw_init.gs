@@ -20,7 +20,7 @@ endwhile
 'open thermodynamic.ctl'
 'set x 1'
 'set y 1'
-'set z 1 26'
+'set z 2 26'
 'set t 1'
 'T='zlike('th',T)
 'Q='zlike('th',Q)
@@ -34,7 +34,8 @@ endwhile
 v1=335; v2=365
 'ini'
 'set grads off'
-'set lev 0 15'
+*'set lev 0 15'
+'set z 2 21.0889'
 'set vrange 'v1' 'v2
 'set xlint 5'
 'set cmark 0'
