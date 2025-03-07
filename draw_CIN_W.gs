@@ -1,6 +1,6 @@
-files1='Init_CIN_const Init_CIN_lin58 Init_CIN_each'
-files2='W2CIN_const W2CIN_lin58 W2CIN_each'
-exps='const linear CTRL'
+files1='Init_CIN_const Init_CIN_lin58 Init_CIN_ctrl'
+files2='W2CIN_const W2CIN_lin58 W2CIN_ctrl'
+exps='CONST LINEAR CTRL'
 colors='50 60 1'
 'set rgb 50 134 97 42'
 'set rgb 60 0 125 0'
@@ -16,11 +16,11 @@ while(n<=num)
     file2=subwrd(files2,n)
     exp.n=subwrd(exps,n)
     'open 'path%file1'.ctl'
-    'set z 2 11.3135'
+    'set z 1 10.3135'
     'cin'n'=if(max(cin.1,z=0,z+0)>1e-3,0,cin.1)'
     'close 1'
     'open 'path%file2'.ctl'
-    'set z 2 11.3135'
+    'set z 1 10.3135'
     'w'n'=w.1'
     if(n<num)
         'close 1'
@@ -32,8 +32,9 @@ n=1
 while(n<=num)
 color=subwrd(colors,n)
 'set grads off'
-'set vrange -127.5 127.5'
-'set xlevs -120 -90 -60 -30 0'
+*'set vrange -127.5 127.5'
+'set vrange -145 145'
+'set xlevs -140 -105 -70 -35 0'
 'set ylint 1'
 'set cmark 3'
 'set cthick 8'
@@ -71,6 +72,10 @@ if(n=1)
 endif
 n=n+1
 endwhile
+'set tile 99 4 36 36 5 15'
+'set rgb 99 tile 99'
+'set line 99'
+'draw recf 3 4.1 8 7.5'
 'legend tl 1 `1CIN 1 3'
 'legend tr 1 `0W 1 2'
 'gxprint /data/W.eddie/GoAmazon_VVM_Figs/CIN_W.png white'
