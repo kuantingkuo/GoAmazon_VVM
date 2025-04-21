@@ -18,9 +18,9 @@ xkm2=(x2-x0)*dx
 
 'c'
 'set xaxis 'xkm1' 'xkm2
-'set ylint 0.3'
+'set ylint 0.2'
 'set grads off'
-'color -levs -0.01 -0.005 0.03 0.06 0.12 0.18 0.24 0.3 -kind (168,168,255)-(1)->white->orange->red'
+'color -levs -0.01 -0.005 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1 -kind (168,168,255)-(1)->white->orange->red'
 'd buo'
 'xcbar3 -unit [m s`a-2`n]'
 'draw xlab X [km]'
@@ -28,7 +28,9 @@ xkm2=(x2-x0)*dx
 'off'
 
 'set cthick 6'
-'d u;w'
+'set arrscl 0.5 2'
+'u0=const(maskout(u.1,lev>0),0,-u)'
+'d u0;w'
 
 'set gxout contour'
 'color -levs -0.6 -0.3 -0.1 0.1 0.3 0.6 0.9 1.2 1.5 1.8 -kind black-(2)->gray->black -gxout contour'
@@ -36,10 +38,10 @@ xkm2=(x2-x0)*dx
 'set cthick 6'
 'd w'
 
-'q gr2xy '64.5-4' 3.5'
+'q gr2xy '64.5-4' 3.9'
 x1=subwrd(result,3)
 y1=subwrd(result,6)
-'q gr2xy '64.5+4' 4.5'
+'q gr2xy '64.5+4' 4.7'
 x2=subwrd(result,3)
 y2=subwrd(result,6)
 'set line 3 1 12'
