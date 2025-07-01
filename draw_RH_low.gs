@@ -39,7 +39,8 @@ while(n<=num)
 
     v1=55; v2=109
     'set grads off'
-    'set lev 0 4'
+*    'set lev 0 4'
+    'set z 2 11.3135'
     'set vrange 'v1' 'v2
     'set xlint 10'
     'set ylint 1'
@@ -64,3 +65,4 @@ endwhile
 'set font 5'
 'legend tr 3 'revexp' 1 60 50'
 'gxprint /data/W.eddie/GoAmazon_VVM_Figs/RH_inic_low.png white'
+'gxprint /data/W.eddie/GoAmazon_VVM_Figs/RH_inic_low.svg white'

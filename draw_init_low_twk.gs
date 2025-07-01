@@ -1,6 +1,6 @@
-exps='linear CTRL'
-infiles='inic_lin58.txt inic.txt'
-colors='60 1'
+exps='3:1 2:1 0'
+infiles='inic_lin58_twk34.txt inic_lin58_twk23.txt inic_lin58.txt'
+colors='50 60 1'
 'set rgb 50 134 97 42'
 'set rgb 60 0 125 0'
 rc=gsfallow('on')
@@ -65,17 +65,14 @@ while(n<=num)
     n=n+1
 endwhile
 revexp=subwrd(exps,num)
-revcol=subwrd(colors,num)
 i=num-1
 while(i>=1)
     revexp=revexp' 'subwrd(exps,i)
-    revcol=revcol' 'subwrd(colors,i)
     i=i-1
 endwhile
 'set font 5'
-'legend r 'num' 'revexp' 'revcol
-*'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_inic_low.png white'
-*'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_inic_low.svg white'
+'legend r 3 'revexp' 1 60 50'
+'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_inic_low_twk.png white'
 
 function thetae(t,p,q)
     'Re=(1-'q')*287'

@@ -1,15 +1,14 @@
 exp_tag='ctrl'
+exp_cap='CTRL'
+sels='1 3 5 6 7 8 9 10 11 12'
 pattern='GoAmazon_'exp_tag'_??_t06'
-Wsiz=8
 path='/data/W.eddie/VVM/DATA/'
 cases=sys('ls -d 'path%pattern'|awk -F/ ''{print $NF}''')
-say cases
-exps='08 10 12 14 16 18 20 22 24'
-exps='0.36(0.77) 0.51(1.03) 0.66(1.31) 0.83(1.64) 0.99(1.97) 1.17(2.35) 1.35(2.77) 1.55(3.22) 1.76(3.70)'
 rc=gsfallow('on')
-num=count_num(cases)
+num=count_num(sels)
 say num
-radi=Wsiz/2
+exps='0.06 0.16 0.29 0.36 0.51 0.66 0.83 0.99 1.17 1.35 1.55 1.76'
+radi=4
 x.1=64.5-radi
 x.4=64.5+radi
 y.1=x.1
@@ -17,8 +16,6 @@ y.4=x.4
 
 v1=0
 v2=27
-*colors='9 11 10 2 14 4 3 6'
-*styles='2 2 2 2 1 1 1 1'
 'color 2 'num' 1 -kind dark_jet'
 colors=range(16,num+16-1)
 styles='1 1 1 1 1 1 1 1 1 1 1 1'
@@ -27,7 +24,8 @@ styles='1 1 1 1 1 1 1 1 1 1 1 1'
 'ini -l'
 i=1
 while(i<=num)
-    case=subwrd(cases,i)
+    j=subwrd(sels,i)
+    case=subwrd(cases,j)
     path='/data/W.eddie/VVM/DATA/'case'/gs_ctl_files/'
     'open 'path'surface.ctl'
     'xygrid'
@@ -51,8 +49,8 @@ while(i<=num)
     'd pa'
     if i=1 
         'draw xlab Time'
-        'draw ylab [mm h`a-1`n]'
-        'draw title Precipitation Rate'
+        'draw ylab Precipitation Rate [mm h`a-1`n]'
+        'draw title VVM 'exp_cap
         'off'
 *        'temp=asumg(if(flag>0,1,0),x=1,x=256,y=1,y=256)'
 *        'q defval temp 1 1'
@@ -73,20 +71,37 @@ while(i<=num)
     'close 1'
     i=i+1
 endwhile
-num=num/2
+*num=num/2
+*exp1=''
+*exp2=''
+*color1=''
+*color2=''
+*i=1
+*while(i<=num)
+*    exp1=exp1%subwrd(exps,i)' '
+*    exp2=exp2%subwrd(exps,i+num)' '
+*    color1=color1%subwrd(colors,i)' '
+*    color2=color2%subwrd(colors,i+num)' '
+*    i=i+1
+*endwhile
+num1=5
+num2=5
 exp1=''
-exp2=''
-color1=''
-color2=''
 i=1
-while(i<=num)
-    exp1=exp1%subwrd(exps,i)' '
-    exp2=exp2%subwrd(exps,i+num)' '
-    color1=color1%subwrd(colors,i)' '
-    color2=color2%subwrd(colors,i+num)' '
+while(i<=num1)
+    j=subwrd(sels,i)
+    exp1=exp1' 'subwrd(exps,j)
     i=i+1
 endwhile
-'legend tc 'num' 'exp1' 'color1
-'legend tr 'num' 'exp2' 'color2
+exp2=''
+while(i<=num1+num2)
+    j=subwrd(sels,i)
+    exp2=exp2' 'subwrd(exps,j)
+    i=i+1
+endwhile
+color1=range(16,16+num1-1)
+color2=range(16+num1,16+num1+num2-1)
+'legend tc 'num1' 'exp1' 'color1
+'legend tr 'num2' 'exp2' 'color2
 'gxprint /data/W.eddie/GoAmazon_VVM_Figs/prec_'exp_tag'_core.png white'
 'gxprint /data/W.eddie/GoAmazon_VVM_Figs/prec_'exp_tag'_core.svg white'

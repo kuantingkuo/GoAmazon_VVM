@@ -1,6 +1,6 @@
-files1='Init_CIN_const Init_CIN_lin58 Init_CIN_ctrl'
-files2='W2CIN_const W2CIN_lin58 W2CIN_ctrl'
-exps='CONST LINEAR CTRL'
+files1='Init_CIN_lin58_twk34 Init_CIN_lin58_twk23 Init_CIN_lin58'
+files2='W2CIN_lin58_twk34 W2CIN_lin58_twk23 W2CIN_lin58'
+exps='3:1 2:1 0'
 colors='50 60 1'
 'set rgb 50 134 97 42'
 'set rgb 60 0 125 0'
@@ -71,11 +71,6 @@ if(n=1)
 endif
 n=n+1
 endwhile
-'set tile 99 4 36 36 5 15'
-'set rgb 99 tile 99'
-'set line 99'
-'draw recf 3 4.1 8 7.5'
 'legend tl 1 `1CIN 1 3'
 'legend tr 1 `0W 1 2'
-'gxprint /data/W.eddie/GoAmazon_VVM_Figs/CIN_W.png white'
-'gxprint /data/W.eddie/GoAmazon_VVM_Figs/CIN_W.svg white'
+'gxprint /data/W.eddie/GoAmazon_VVM_Figs/CIN_W_twk.png white'

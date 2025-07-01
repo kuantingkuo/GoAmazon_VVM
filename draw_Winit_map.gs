@@ -16,7 +16,7 @@ xkm2=(x2-x0)*dx
 'set grads off'
 'set xaxis 'xkm1' 'xkm2
 'set yaxis 'xkm1' 'xkm2
-'color -levs -0.6 -0.27 -0.1 -0.06 -0.02 0.1 0.3 0.7 1.2 1.9 -kind (134,97,42)-(1)->(238,199,100)-(2)->white->salmon->(235,0,235)'
+'color -levs -0.6 -0.27 -0.1 -0.06 -0.02 0.1 0.3 0.7 1.2 1.9 -kind (134,97,42)-(1)->(238,199,100)-(2)->white->(60,160,150)->(0,60,50)'
 'd w'
 'draw xlab X [km]'
 'draw ylab Y [km]'

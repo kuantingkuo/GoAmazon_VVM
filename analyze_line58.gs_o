@@ -1,0 +1,71 @@
+path='/data/W.eddie/VVM/DATA/'
+rc=gsfallow('on')
+'reinit'
+'ini -l'
+
+'open 'path'GoAmazon_line58_14_t06/gs_ctl_files/thermodynamic.ctl'
+'open 'path'GoAmazon_line58_16_t06/gs_ctl_files/thermodynamic.ctl'
+'set x 56.5 72.5'
+'set y 64'
+'set z 2 14'
+z0=qdims('levmin')/1000
+z1=qdims('levmax')/1000
+'set t 1 61'
+
+infile='inic_lin58.txt'
+rc=read(infile)
+pres=''
+k=1
+while(k<=14)
+    rc=read(infile)
+    line=sublin(rc,2)
+    pres=pres' 'subwrd(line,2)
+    k=k+1
+endwhile
+'P='zlike('th',pres)
+'Tc1=th.1*pow(P/100000,287.04/1004.64)-273.15'
+'Tc2=th.2*pow(P/100000,287.04/1004.64)-273.15'
+'tpq2rh Tc1 P qv'
+'rh1=rh'
+'tpq2rh Tc2 P qv'
+'rh2=rh'
+'cld1=qc.1+qi.1'
+'cld2=qc.2+qi.2'
+'thv1=th.1*(1+0.608*qv.1-cld1)'
+'thv1env=amean(th.1*(1+0.608*qv.1-cld1),x=1,x=128,y=1,y=128)'
+'buo1=(thv1-thv1env)/thv1env*9.80616'
+'thv2=th.2*(1+0.608*qv.2-cld2)'
+'thv2env=amean(th.2*(1+0.608*qv.2-cld2),x=1,x=128,y=1,y=128)'
+'buo2=(thv2-thv2env)/thv2env*9.80616'
+
+'open 'path'GoAmazon_line58_14_t06/gs_ctl_files/dynamic.ctl'
+'open 'path'GoAmazon_line58_16_t06/gs_ctl_files/dynamic.ctl'
+
+t=1
+while(t<=61)
+'c'
+'on'
+'set grads off'
+'set t 't
+'set xaxis -4 4'
+'set yaxis 'z0' 'z1' 1'
+'color -levs -0.2 -0.16 -0.12 -0.08 -0.04 -0.02 0.02 0.04 0.08 0.12 0.16 0.2'
+'d thv2-thv1'
+'cbar3 [m s`a-2`n]'
+'draw xlab [km]'
+'draw ylab Height [km]'
+tt=math_format('%02g',t-1)
+'draw title Buoyancy (shaded)                      `0'tt' min.\RH [%] (colored lines) & W [m s`a-1`n] (black lines)'
+'off'
+'color 72 99 3 -kind drywet -gxout contour'
+'set clab masked'
+'set cthick 8'
+'d rh2'
+'set ccolor 1'
+'set clab masked'
+'set cthick 4'
+'set clevs -1 -0.8 -0.6 -0.4 -0.2 0.2 0.4 0.6 0.8 1'
+'d w.4'
+'gxprint /data/W.eddie/GoAmazon_VVM_temp/analyze_line58_'tt'.png white'
+t=t+1
+endwhile

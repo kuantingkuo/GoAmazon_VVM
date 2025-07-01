@@ -182,7 +182,7 @@ def Q_from_theta_e(theta_e, pres, temp):
 
 if __name__ == '__main__':
     # Load the data
-    casename = 'lin58_twk34'
+    casename = 'lin58_twk23'
     txtfile = f'inic_{casename}.txt'
     PS = 100325.734375
     colspecs = [(0, 15), (16, 31), (32, 47), (48, 73), (74, 203)]
@@ -191,6 +191,19 @@ if __name__ == '__main__':
     pres = df['P'].values
     T = df['T'].values
     Q = df['Q'].values
+    # Calculate new levels at mid-point between pres levels
+    new_pres = (pres[:-1] + pres[1:]) / 2
+
+    # Combine original and new levels
+    combined_pres = np.sort(np.concatenate((pres, new_pres)))
+    combined_T = np.interp(combined_pres, pres[::-1], T[::-1])
+    combined_Q = np.interp(combined_pres, pres[::-1], Q[::-1])
+
+    # Use combined_pres, combined_T, and combined_Q for further calculations
+    pres = combined_pres[::-1]
+    T = combined_T[::-1]
+    Q = combined_Q[::-1]
+
     dp = pres[:-1] - pres[1:]
     theta = T * (100000. / pres) ** (287.04 / 1004.64)
     theta_e = np.empty(theta.shape)
@@ -233,7 +246,7 @@ if __name__ == '__main__':
         coords={'pressure': pres[::-1]},
         attrs={'units': 'J/kg'}
     )
-    CIN.to_netcdf(f'Init_CIN_{casename}.nc')
+    CIN.to_netcdf(f'Init_CIN_{casename}_interp.nc')
     W = xr.DataArray(
         w[::-1],
         name='W',
@@ -242,4 +255,4 @@ if __name__ == '__main__':
         attrs={'units': 'm/s',
                'long_name': 'vertical velocity corresponding to CIN'}
     )
-    W.to_netcdf(f'W2CIN_{casename}.nc')
+    W.to_netcdf(f'W2CIN_{casename}_interp.nc')

@@ -31,7 +31,7 @@ endwhile
 't2qs Tc P'
 'thes='thetae('T','P','qs')
 
-v1=335; v2=365
+v1=333; v2=357
 'ini'
 'set grads off'
 *'set lev 0 15'
@@ -52,11 +52,23 @@ v1=335; v2=365
 'set cstyle 2'
 'd thes'
 'legend r 2 `3z`2`be`n `3z`2`bes`n 1 1 0 0 1 2'
-*'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_'exp'inic.png white'
 'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_'exp'_inic.png white'
+'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_'exp'_inic.svg white'
 
 function thetae(t,p,q)
+    'Re=(1-'q')*287'
+    'Cp=1005+'q'*(4219-1005)'
+    'R=287+'q'*461.5-'q'*287'
+    'pv='p'*'q'/(0.622+(1-0.622)*'q')'
+    'Tc='t'-273.15'
+    't2es Tc'
+    'ps=es'
+    'omegae=pow(R/Re,Re/Cp)*pow(pv/ps,-'q'*461.5/Cp)'
+    'thetae='t' * pow(100000/'p',Re/Cp) * omegae * exp(('q'*2.5009e6)/(Cp*'t'))'
+    return 'thetae'
+function thetae_bolton(t,p,q)
     'r='q'/(1-'q')'
+    path = '/data/W.eddie/GoAmazon_VVM/'
     'e='p'*r/(0.622+r)'
     'TL=(2840/(3.5*log('t')-log(e/100)-4.805))+55'
     'chie=0.2854*(1-0.28*r)'

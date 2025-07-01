@@ -182,7 +182,7 @@ def Q_from_theta_e(theta_e, pres, temp):
 
 if __name__ == '__main__':
     # Load the data
-    casename = 'lin58_twk34'
+    casename = 'ctrl'
     txtfile = f'inic_{casename}.txt'
     PS = 100325.734375
     colspecs = [(0, 15), (16, 31), (32, 47), (48, 73), (74, 203)]
@@ -208,38 +208,31 @@ if __name__ == '__main__':
     Tv = T * (1 + 0.608 * q_new)
     CIN = np.zeros(pres.shape)
     for k in range(len(pres)):
-        if (theta_e[k]<theta_es[k+1:]).all():
-            CIN[k] = np.nan
-            continue
         print(f'k={k}')
         P_lcl, T_lcl = calc_lcl(theta[k], q_new[k])
+        T_parcel = np.empty(pres.shape)
+        Q_parcel = np.empty(pres.shape)
+        RH = np.empty(pres.shape)
         for kk in range(k+1, len(pres)):
-            T_parcel = np.where(pres[kk] < P_lcl,
+            T_parcel[kk] = np.where(pres[kk] < P_lcl,
                                 T_parcel_moist(theta_e[k], pres[kk], q_new[k]),
                                 theta[k] * np.power(pres[kk] / 100000., 287.04 / 1004.64))
-            es_parcel = es_calc(T_parcel)
+            es_parcel = es_calc(T_parcel[kk])
             qs_parcel = 0.622 * es_parcel / (pres[kk] - (1 - 0.622) * es_parcel)
-            Q_parcel = np.where(pres[kk] < P_lcl, qs_parcel, q_new[kk])
-            Tv_parcel = T_parcel * (1 + 0.608 * Q_parcel)
-            CIN_temp = 287.04 * (Tv_parcel - Tv[kk]) / pres[kk] * dp[kk]
-            if CIN_temp > 0:
-                break
-            CIN[k] += CIN_temp
-    w = np.sqrt(2. * -CIN)
-    CIN = xr.DataArray(
-        CIN[::-1],
-        name='CIN',
-        dims=['pressure'],
-        coords={'pressure': pres[::-1]},
-        attrs={'units': 'J/kg'}
-    )
-    CIN.to_netcdf(f'Init_CIN_{casename}.nc')
-    W = xr.DataArray(
-        w[::-1],
-        name='W',
-        dims=['pressure'],
-        coords={'pressure': pres[::-1]},
-        attrs={'units': 'm/s',
-               'long_name': 'vertical velocity corresponding to CIN'}
-    )
-    W.to_netcdf(f'W2CIN_{casename}.nc')
+            Q_parcel[kk] = np.where(pres[kk] < P_lcl, qs_parcel, q_new[kk])
+            Tv_parcel = T_parcel[kk] * (1 + 0.608 * Q_parcel[kk])
+            e_parcel = pres[kk] * Q_parcel[kk] / (0.622+0.378*Q_parcel[kk])
+            RH[kk] = 100. * e_parcel / es_parcel
+        ds = xr.Dataset(
+                data_vars=dict(
+                    T=('P', T_parcel),
+                    Q=('P', Q_parcel),
+                    RH=('P', RH),
+                    PLCL=(P_lcl),
+                    TLCL=(T_lcl)
+                ),
+                coords=dict(
+                    pres=('P', pres),
+                )
+            )
+        ds.to_netcdf(f'parcel_non-entrain_lev{k}.nc')

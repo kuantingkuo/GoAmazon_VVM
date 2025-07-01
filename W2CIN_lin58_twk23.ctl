@@ -1,12 +1,11 @@
-DSET ^test_dry2_WI2CIN_each.nc
+DSET ^W2CIN_lin58_twk23.nc
 DTYPE NetCDF
-TITLE W corresponding to CIN at interface
+TITLE W corresponding to CIN
 UNDEF -9.99e8
 OPTIONS zrev 365_day_calendar
 XDEF  1 LINEAR 0.000000 1.250000
 YDEF  1 LINEAR -90.000000 0.942408
-ZDEF 31 LEVELS
-0
+ZDEF 30 LEVELS
 0.13152838391
 0.28997864807
 0.47449026618
@@ -39,5 +38,5 @@ ZDEF 31 LEVELS
 40.66182969029
 TDEF 1 LINEAR 00:00Z00jan0000 1mn
 VARS 1
-WI=>WI 31 z vertical velocity corresponding to CIN at interface [m/s]
+W=>W 30 z vertical velocity corresponding to CIN [m/s]
 ENDVARS
