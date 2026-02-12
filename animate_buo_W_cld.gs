@@ -9,7 +9,7 @@ rc=gsfallow('on')
 'open 'path'GoAmazon_'case'_t06/gs_ctl_files/W.ctl'
 'set x 56.5 72.5'
 'set y 64'
-'set z 2 14'
+'set z 2 23'
 z0=qdims('levmin')/1000
 z1=qdims('levmax')/1000
 'set t 1 last'
@@ -17,7 +17,7 @@ z1=qdims('levmax')/1000
 rc=read(infile)
 pres=''
 k=1
-while(k<=14)
+while(k<=23)
     rc=read(infile)
     line=sublin(rc,2)
     pres=pres' 'subwrd(line,2)
@@ -30,12 +30,12 @@ endwhile
 'thv1env=amean(th.1*(1+0.608*qv.1-cld1),x=1,x=128,y=1,y=128)'
 'buo1=(thv1-thv1env)/thv1env*9.80616'
 
-nt=count_num(tsels)
-*t=1
-*while(t<=181)
-it=1
-while(it<=nt)
-t=subwrd(tsels,it)
+t=1
+while(t<=181)
+*nt=count_num(tsels)
+*it=1
+*while(it<=nt)
+*t=subwrd(tsels,it)
 'c'
 'on'
 'set grads off'
@@ -49,7 +49,7 @@ t=subwrd(tsels,it)
 'draw xlab [km]'
 'draw ylab Height [km]'
 ttt=math_format('%03g',t-1)
-'draw title Buoyancy (shaded)                         `0'ttt' min.\Cloud Water [g kg`a-1`n] (green contours) & W [m s`a-1`n] (black contours)'
+'draw title Buoyancy (shaded)                         `0'ttt' min.\Cloud Water [g kg`a-1`n] (green contours) & `2w`1 [m s`a-1`n] (black contours)'
 'off'
 'set ccolor 4'
 'set clab masked'
@@ -62,7 +62,8 @@ ttt=math_format('%03g',t-1)
 'set clevs -1 -0.8 -0.6 -0.4 -0.2 0.2 0.4 0.6 0.8 1'
 'd w.2'
 *'gxprint /data/W.eddie/GoAmazon_VVM_temp/GoAmazon_'case'_t06_'ttt'.png white'
-'gxprint /data/W.eddie/GoAmazon_VVM_temp/GoAmazon_'case'_t06_'ttt'.svg white'
-*t=t+1
-it=it+1
+'gxprint /data/W.eddie/GoAmazon_VVM_temp/GoAmazon_'case'_t06_16km_'ttt'.png white'
+*'gxprint /data/W.eddie/GoAmazon_VVM_temp/GoAmazon_'case'_t06_'ttt'.svg white'
+t=t+1
+*it=it+1
 endwhile

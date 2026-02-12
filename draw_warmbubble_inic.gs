@@ -47,7 +47,8 @@ y1=subwrd(result,6)
 'q gr2xy '64.5+4' 6.95'
 x2=subwrd(result,3)
 y2=subwrd(result,6)
-'set line 3 1 12'
+'set rgb 99 255 0 255'
+'set line 99 1 12'
 'draw line 'x1' 'y1' 'x2' 'y2
 'draw line 'x1' 'y1+0.3' 'x1' 'y1-0.3
 'draw line 'x2' 'y2+0.3' 'x2' 'y2-0.3

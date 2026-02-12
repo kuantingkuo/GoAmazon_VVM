@@ -188,6 +188,7 @@ if __name__ == '__main__':
     colspecs = [(0, 15), (16, 31), (32, 47), (48, 73), (74, 203)]
     df = pd.read_fwf(txtfile, colspecs=colspecs, skiprows=1, header=None,
                      names=['Height', 'P', 'T', 'Q', 'dummy'])
+    exit()
     pres = df['P'].values
     T = df['T'].values
     Q = df['Q'].values

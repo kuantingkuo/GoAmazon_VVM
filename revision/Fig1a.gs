@@ -19,7 +19,7 @@ while(k<=26)
 endwhile
 'ini'
 'open thermodynamic.ctl'
-'open parcel_entrain.ctl'
+'open parcel_entrain0.001.ctl'
 'set x 1'
 'set y 1'
 'set z 2 21.0889'
@@ -33,7 +33,7 @@ v1=333; v2=357
 'set xlint 5'
 'set ylint 1'
 'set ccolor 2'
-'d maskout(the,lev<9)'
+'d maskout(the,lev<4)'
 'draw xlab [K]'
 'draw ylab Height [km]'
 'off'
@@ -60,8 +60,8 @@ v1=333; v2=357
 'd thes'
 'legend r 2 `3z`2`be`n `3z`2`bes`n 1 1 0 0 1 2'
 'legend tl 1 ent_plume 2 2'
-'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_'exp'_inic.png white'
-'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_'exp'_inic.svg white'
+'gxprint the_'exp'_inic.png white'
+'gxprint the_'exp'_inic.svg white'
 
 function thetae(t,p,q)
     'Re=(1-'q')*287'

@@ -1,15 +1,17 @@
+* grads -a 2
 expname='CTRL'
 exp='ctrl'
 names='0.06 0.29 0.99'
 cases='02 06 16'
+precinits='70 38 26'
 rc=gsfallow('on')
 num=count_num(cases)
 infile='inic.txt'
 path='/data/W.eddie/VVM/DATA/'
 'reinit'
 'ini'
-ncols=6
-'color 1 'ncols-1' 1 -kind black-(0)->dark_jet'
+ncols=7
+'color 1 'ncols-1' 1 -kind (50,150,255)-(1)->blue-(0)->(0,0,0)-(0)->red-(1)->(255,150,50)'
 rc=read(infile)
 pres=''
 T=''
@@ -26,32 +28,46 @@ endwhile
 'c'
 i=1
 while(i<=num)
-'on'
-case=subwrd(cases,i)
-'open 'path'GoAmazon_'exp'_'case'_t06/gs_ctl_files/thermodynamic.ctl'
-'open 'path'GoAmazon_'exp'_'case'_t06/gs_ctl_files/dynamic.ctl'
-'set x 64'
-'set y 64'
-'set t 1'
-'P='zlike('th',pres)
+    'on'
+    case=subwrd(cases,i)
+    'open 'path'GoAmazon_'exp'_'case'_t06/gs_ctl_files/thermodynamic.ctl'
+    'open 'path'GoAmazon_'exp'_'case'_t06/gs_ctl_files/dynamic.ctl'
+    'set x 64'
+    'set y 64'
+    'set t 1'
+    'P='zlike('th',pres)
 
-xc=64.5
-yc=64.5
-dt=5
-        d=4
-        'set x 1 128'
-        'set y 1 128'
-        'set z 1'
-        'xygrid'
-        'flag=const(th,1)'
-        'R=sqrt(pow(xgrid-'xc',2)+pow(ygrid-'yc',2))'
-        'flag=if((R<='d'),flag,-1)'
-t=1
-while(t<=dt*(ncols-1)+1)
-    'set t 't
+    xc=64.5
+    yc=64.5
+    dt=5
+    d=3
+    'set x 1 128'
+    'set y 1 128'
+    'set z 1'
+    'xygrid'
+    'flag=const(th,1)'
+    'R=sqrt(pow(xgrid-'xc',2)+pow(ygrid-'yc',2))'
+    'flag=if((R<='d'),flag,-1)'
+    'open 'path'GoAmazon_'exp'_'case'_t06/gs_ctl_files/surface.ctl'
+    'set x 1'
+    'set y 1'
+    'set t 1 last'
+    'precgt1=amean(maskout(sprec.3*3600,flag),x='xc-d',x='xc+d',y='yc-d',y='yc+d')>1'
+    'd maxloc(precgt1,t=1,t=180)'
+    line=sublin(result,2)
+    init=subwrd(line,4)
+    say 'Prec. initial timestep: 'init
+    'close 3'
+    v1=-4.6; v2=4.6; vint=1
+*    init=subwrd(precinits,i)
+    t=init-15
+    nt=1
+    while(nt<=ncols)
+        'set t 't
+        say t
         'set z 2 12'
         z0=qdims('levmin')/1000
-        'set lev 'z0*1000' 4000'
+        'set lev 'z0*1000' 3200'
         z1=qdims('levmax')/1000
         'set x 'xc-d-1' 'xc+d+1
         'set y 'yc-d-1' 'yc+d+1
@@ -66,41 +82,44 @@ while(t<=dt*(ncols-1)+1)
         'mul 'num' 1 -n 'i
         'set grads off'
         'set yaxis 'z0' 'z1
-        if (t=1)
+        'set ylint 1'
+        if (nt=1)
             if(i>1)
                 'set ylabs |||||||||||||||'
             endif
-            'set vrange -3.5 3.5'
-            'set xlint 1'
+            'set vrange 'v1' 'v2
+            'set xlint 'vint
             'set cmark 0'
             'set cthick 4'
             'set ccolor 15'
             'd const(conv1,0)'
         endif
-        'set vrange -3.5 3.5'
-        'set xlint 1'
+        'set vrange 'v1' 'v2
+        'set xlint 'vint
         'set cmark 0'
-        'set cthick 6'
-        'set ccolor '%15+(t-1)/dt+1
+        'set cthick 8'
+        'set ccolor '%15+nt
         'd conv1*1e3'
-        if(t=1)
+        if(nt=1)
             'draw xlab Conv. [`3*`110`a-3`n s`a-1`n]'
             'draw title VVM `0'subwrd(names,i)
             if(i=1)
                 'draw ylab Height [km]'
                 cols=range(16,16+ncols-1)
                 strings=range(0,dt*(ncols-1),dt)
-                'legend tl 'ncols' 'strings' 'cols
+                strings=range(-15,15,dt)
+                'legend bl 'ncols' 'strings' 'cols
             endif
         endif
-    'off'
-    t=t+dt
+        'off'
+        t=t+dt
+        nt=nt+1
+    endwhile
+    'close 2'
+    'close 1'
+    i=i+1
 endwhile
-'close 2'
-'close 1'
-i=i+1
-endwhile
-'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_conv_'exp'_'case'.png white'
+'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_conv_'exp'_'case'.png white x800 y400'
 'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_conv_'exp'_'case'.svg white'
 
 function thetae(t,p,q)

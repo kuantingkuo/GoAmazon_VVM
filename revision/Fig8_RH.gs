@@ -9,9 +9,13 @@ infile='inic_lin58.txt'
 path='/data/W.eddie/VVM/DATA/'
 rc=gsfallow('on')
 tnum=count_num(tsels)
+k0=1
 'reinit'
 'ini'
+'set xlopts 1 3 0.19'
+'set ylopts 1 3 0.2'
 rc=read(infile)
+height=''
 pres=''
 T=''
 Q=''
@@ -19,6 +23,7 @@ k=1
 while(k<=26)
     rc=read(infile)
     line=sublin(rc,2)
+    height=height' 'subwrd(line,1)
     pres=pres' 'subwrd(line,2)
     T=T' 'subwrd(line,3)
     Q=Q' 'subwrd(line,4)
@@ -43,38 +48,33 @@ endwhile
 'P='zlike('th',pres)
 
 'color 1 8 1 -kind black-(0)->dark_jet'
-'set z 2 11'
+'set z 'k0' 11'
 z0=qdims('levmin')/1000
 z1=qdims('levmax')/1000
 'T0=th*pow(P/100000,2/7)'
 'Tc0=T0-273.15'
 'Q0=qv'
-'the0='thetae('T0','P','Q0')
-'t2qs Tc0 P'
-'Qs0=qs'
-'thes0='thetae('T0','P','Qs0')
 tstr=''
 it=1
 while(it<=tnum)
     t=subwrd(tsels,it)
     tt=math_format('%02g',t)
     tstr=tstr'_'t
-    'mul 'tnum' 1 -n 'it''
+    'mul 'tnum' 1 'it' 1 -yint 0.6 -yoffset -0.04'
+    'set dfile 1'
     'on'
     'set grads off'
     'set t 't
+    'set z 1 11'
     i=1
     while(i<=2)
         col=subwrd(cols,i)
         'T=amean(th.'i'*pow(P/100000,2/7),x=64,x=65,y=64,y=65)'
         'Tc=T-273.15'
         'Q=amean(qv.'i',x=64,x=65,y=64,y=65)'
-        'the='thetae('T','P','Q')
-        't2qs Tc P'
-        'Q=qs'
-        'thes='thetae('T','P','Q')
+        'tpq2rh Tc P Q'
         'set yaxis 'z0' 'z1
-        'set vrange 331 361'
+        'set vrange 65 105'
         'set xlint 10'
         'set ylint 1'
         if (it>1)
@@ -83,41 +83,20 @@ while(it<=tnum)
         'set cmark 0'
         'set ccolor 'col
         'set cthick '7-i
-        'd the'
+        'd rh'
+        'q gxinfo'
         if(i=1)
+            'draw xlab [%]'
             'draw title 't-1' min.'
-            'draw xlab `3z`b`2e`n`1 [K]'
         if(it=1)
             'draw ylab Height [km]'
         endif
         endif
         'off'
-        'set cstyle 2'
-        'set cmark 0'
-        'set ccolor 'col
-        'set cthick '8-i
-        'd thes'
-        'set x 63.93 64.'10-i*2
-        'set ccolor 'col
-        'set arrowhead -0.4'
-        'set arrscl 0.5 1'
-        'set cthick 8'
-        'd const(w.'i+2',0);w.'i+2
         i=i+1
     endwhile
+
     it=it+1
 endwhile
-'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_evo_2_'exp%tstr'.png white'
-'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_evo_2_'exp%tstr'.svg white'
-
-function thetae(t,p,q)
-    'Re=(1-'q')*287'
-    'Cp=1005+'q'*(4219-1005)'
-    'R=287+'q'*461.5-'q'*287'
-    'pv='p'*'q'/(0.622+(1-0.622)*'q')'
-    'Tc='t'-273.15'
-    't2es Tc'
-    'ps=es'
-    'omegae=pow(R/Re,Re/Cp)*pow(pv/ps,-'q'*461.5/Cp)'
-    'thetae='t' * pow(100000/'p',Re/Cp) * omegae * exp(('q'*2.5009e6)/(Cp*'t'))'
-    return 'thetae'
+'gxprint /data/W.eddie/GoAmazon_VVM_Figs/Fig8_RH.png white'
+'gxprint /data/W.eddie/GoAmazon_VVM_Figs/Fig8_RH.svg white'

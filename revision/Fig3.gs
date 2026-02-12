@@ -62,9 +62,9 @@ while(i<=_num)
     i=i+1
 endwhile
 *'gxprint /data/W.eddie/GoAmazon_VVM_Figs/prec_3.png white x1000 y400'
-'gxprint /data/W.eddie/GoAmazon_VVM_Figs/prec_3_mimic.png white x1000 y400'
+'gxprint /data/W.eddie/GoAmazon_VVM_Figs/Fig3_rev.png white x1000 y400'
 *'gxprint /data/W.eddie/GoAmazon_VVM_Figs/prec_3.svg white'
-'gxprint /data/W.eddie/GoAmazon_VVM_Figs/prec_3_mimic.svg white'
+'gxprint /data/W.eddie/GoAmazon_VVM_Figs/Fig3_rev.svg white'
 
 function draw_VVM()
 tag=subwrd(_tags,1)
@@ -111,6 +111,34 @@ while(i<=_num)
     'close 1'
     i=i+1
 endwhile
+'open /data/W.eddie/VVM/DATA/GoAmazon_L60_ctrl_16_t06/gs_ctl_files/surface.ctl'
+'xygrid'
+'flag=const(sprec,1)'
+'R=sqrt(pow(xgrid-64.5,2)+pow(ygrid-64.5,2))'
+radi=3/2/0.1
+'flag=if(R>'radi',-1,flag)'
+'set x 1'
+'set y 1'
+'set time 00Z 03Z'
+'pa1=amean(maskout(sprec.1*3600,flag),x='64.5-radi',x='64.5+radi',y='64.5-radi',y='64.5+radi')'
+'open /data/W.eddie/VVM/DATA/GoAmazon_L70_ctrl_16_t06/gs_ctl_files/surface.ctl'
+'pa2=amean(maskout(sprec.2*3600,flag),x='64.5-radi',x='64.5+radi',y='64.5-radi',y='64.5+radi')'
+case_num=1
+while(case_num<=2)
+    'set grads off'
+    'set xlabs 0||1||2||3'
+    color=subwrd(_colors,case_num)
+    'set ccolor 1'
+    'set cstyle 'case_num+1
+    'set cmark 0'
+    'set cthick 4'
+    'set vrange '_v1' '_v2
+    'set ylint '_vint
+    'd pa'case_num
+    case_num=case_num+1
+endwhile
+'legend tr 2 100m_L60 100m_L70 1 1 0 0 2 3'
+'close 2';'close 1'
 return
 
 function draw_ACE()

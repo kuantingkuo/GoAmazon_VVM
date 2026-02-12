@@ -1,11 +1,11 @@
 *grads -a 1.5
-case_VVM='ctrl_16'
-tsels_VVM='2 9 15'
-case_ACE='control13579_enhanced-condensate-loss_supercoolll'
-tsels_ACE='3 9 52'
-infile='inic_ctrl.txt'
-path_VVM='/data/W.eddie/VVM/DATA/GoAmazon_'case_VVM'_t06/'
-path_ACE='/data/W.eddie/GoAmazon_ACE/ACE-runs/'case_ACE'/'
+case_1='line58_14'
+tsels_1='13 14 15'
+case_2='line58_16'
+tsels_2='13 14 15'
+infile='inic_lin58.txt'
+path_1='/data/W.eddie/VVM/DATA/GoAmazon_'case_1'_t06/'
+path_2='/data/W.eddie/VVM/DATA/GoAmazon_'case_2'_t06/'
 rc=gsfallow('on')
 'set rgb 99 30 180 30'
 'set ccolor 99'
@@ -26,8 +26,8 @@ ypageM=ypage/2
 ********** VVM ************
 ypage1=ypage/2+0.2
 dypage=ypage-ypage1
-'open 'path_VVM'gs_ctl_files/thermodynamic.ctl'
-'open 'path_VVM'gs_ctl_files/W.ctl'
+'open 'path_1'gs_ctl_files/thermodynamic.ctl'
+'open 'path_1'gs_ctl_files/W.ctl'
 
 'set x 56.5 72.5'
 'set y 64'
@@ -37,11 +37,15 @@ z1=qdims('levmax')/1000
 
 nt=3
 it=1
+tags='(a) (b) (c) (d) (e) (f)'
+tagi=1
 dy=5.6
 ylw=0.4
 xpage2=ylw
 while(it<=nt)
-    t=subwrd(tsels_VVM,it)
+    t=subwrd(tsels_1,it)
+    tag=subwrd(tags,tagi)
+    tagi=tagi+1
     dxpage=(xpage+(nt-1)*ylw)/nt
     say dxpage
     xpage1=xpage2-ylw
@@ -62,12 +66,20 @@ while(it<=nt)
     'buo1=(thv1-thv1env)/thv1env*9.80616'
     'set xaxis -4 4'
     'set yaxis 'z0' 'z1' 1'
-    clevs='-0.05 -0.04 -0.03 -0.02 -0.01 -0.005 0.005 0.01 0.02 0.03 0.04 0.05'
+    clevs='-0.02 -0.016 -0.012 -0.008 -0.004 -0.002 0.002 0.004 0.008 0.012 0.016 0.02'
     'color -levs 'clevs' -kind blue-(5)->white->orange->red'
     'd buo1'
-    if(it=1);'draw ylab Height [km]';endif
+*ylab
+    if(it=1)
+        'set string 1 bc 4 90'
+        'set strsiz 0.24 0.3'
+        'draw string 'xp1-0.7' '%(yp1+yp2)/2%' Height [km]'
+    endif
     ttt=math_format('%03g',t-1)
-    'draw title VVM 0.99           `0'ttt' min.'
+*title
+    'set string 1 bl 5 0'
+    'set strsiz 0.28 0.35'
+    'draw string 'xp1' '%yp2+0.2%' 'tag' VVM 0.83     `0'ttt' min.'
     'off'
     'set ccolor 4'
     'set clab masked'
@@ -95,20 +107,25 @@ endwhile
     'xcbar3 1 'xpage-1' 'ypageM+0.05' 'ypageM+0.2' -fw 0.11 -fh 0.132 -ft 3 -levcol 'levcol' -unit B [m s`a-2`n]'
 'close 2'
 'close 1'
-************ ACE **********
+************ Case 2 **********
 ypage1=0
 ypage2=dypage
-*'open 'path_ACE'GoAmazon_idp314_kknw25cin_6aces-dynamic_means.16.ctl'
-*'open 'path_ACE'GoAmazon_idp314_kknw25cin_6aces-dynamic_means.16_zm.ctl'
-'open 'path_ACE'GoAmazon_idp314_kknw25cin_6aces-dynamic_means.16_enhanced-codensate-loss.ctl'
-'open 'path_ACE'GoAmazon_idp314_kknw25cin_6aces-dynamic_means.16_enhanced-codensate-loss_zm.ctl'
+'open 'path_2'gs_ctl_files/thermodynamic.ctl'
+'open 'path_2'gs_ctl_files/W.ctl'
 
+'set x 56.5 72.5'
+'set y 64'
+'set z 2 13'
+z0=qdims('levmin')/1000
+z1=qdims('levmax')/1000
 
 nt=3
 it=1
 xpage2=ylw
 while(it<=nt)
-    t=subwrd(tsels_ACE,it)
+    t=subwrd(tsels_2,it)
+    tag=subwrd(tags,tagi)
+    tagi=tagi+1
     dxpage=(xpage+(nt-1)*ylw)/nt
     say dxpage
     xpage1=xpage2-ylw
@@ -123,24 +140,29 @@ while(it<=nt)
     'on'
     'set grads off'
     'set t 't
-    rc=make_sym('B','symB')
-    rc=make_sym('qc*1e3','symqc')
-    'set dfile 2'
-    'set x 1'
-    'set ylint 1'
-    'rho=rho.2'
-    'set x -3 5'
-    'W=mf.2/rho'
-    rc=make_sym('W','symW')
-    'set dfile 1'
-    'set lev 0.131528 6.06431'
+    'cld1=qc.1+qi.1'
+    'thv1=th.1*(1+0.608*qv.1-cld1)'
+    'thv1env=amean(th.1*(1+0.608*qv.1-cld1),x=1,x=128,y=1,y=128)'
+    'buo1=(thv1-thv1env)/thv1env*9.80616'
     'set xaxis -4 4'
+    'set yaxis 'z0' 'z1' 1'
     'color -levs 'clevs' -kind blue-(5)->white->orange->red'
-    'd symB'
-*    'draw xlab [km]'
-    if(it=1);'draw ylab Height [km]';endif
+    'd buo1'
+*xlab
+    'set string 1 bc 4 0'
+    'set strsiz 0.24 0.3'
+    'draw string '%(xp1+xp2)/2%' 0.12 [km]'
+*ylab
+    if(it=1)
+        'set string 1 bc 4 90'
+        'set strsiz 0.24 0.3'
+        'draw string 'xp1-0.7' '%(yp1+yp2)/2%' Height [km]'
+    endif
     ttt=math_format('%03g',t-1)
-    'draw title ACE 0.99           `0'ttt' min.'
+*title
+    'set string 1 bl 5 0'
+    'set strsiz 0.28 0.35'
+    'draw string 'xp1' '%yp2+0.2%' 'tag' VVM 0.99     `0'ttt' min.'
     'off'
     'set ccolor 4'
     'set clab masked'
@@ -148,38 +170,13 @@ while(it<=nt)
     'set clevs 1e-2 1e-1 1 2 3 4'
     'set ccolor 99'
     'set cthick 4'
-    'd symqc'
+    'd cld1*1e3'
     'set ccolor 1'
     'set clab masked'
     'set cthick 2'
-    'color -levs -4 -1 -0.25 0.25 1 4 16 -kind black->black -gxout contour'
-    'd symW'
+    'set clevs -4 -1 -0.25 0.25 1 4 16'
+    'd w.2'
     it=it+1
 endwhile
-'gxprint /data/W.eddie/GoAmazon_VVM_Figs/buo_W_cld_6.png white'
-'gxprint /data/W.eddie/GoAmazon_VVM_Figs/buo_W_cld_6.svg white'
-
-function make_sym(var,new)
-    'set x -3 5'
-    'set z 1 62'
-    ''new'=const('var',0,-u)'
-    k=1
-    while(k<=62)
-        i=-3
-        while(i<1)
-            'set z 'k
-            'set x 'i
-            'lon0=lon'
-            'lev0=lev'
-            'set x '2-i
-            'd 'var
-            temp=subwrd(result,4)
-            'set x -3 5'
-            'set z 1 62'
-            ''new'=const(maskout('new',(lon!=lon0)|(lev!=lev0)),'temp',-u)'
-            i=i+1
-        endwhile
-    k=k+1
-    endwhile
-
-    return
+'gxprint /data/W.eddie/GoAmazon_VVM_Figs/Fig9.png white'
+'gxprint /data/W.eddie/GoAmazon_VVM_Figs/Fig9.svg white'

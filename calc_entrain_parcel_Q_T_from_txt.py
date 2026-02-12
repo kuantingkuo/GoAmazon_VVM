@@ -183,7 +183,7 @@ def Q_from_theta_e(theta_e, pres, temp):
 if __name__ == '__main__':
     # Load the data
     casename = 'ctrl'
-    ent = 1e-4 # entrainment rate [m-1]
+    ent = 1e-3 # entrainment rate [m-1]
     txtfile = f'inic_{casename}.txt'
     PS = 100325.734375
     colspecs = [(0, 15), (16, 31), (32, 47), (48, 73), (74, 203)]
@@ -209,9 +209,9 @@ if __name__ == '__main__':
     print([f"{x:.18e}" for x in q_new])
     Tv = T * (1 + 0.608 * q_new)
     CIN = np.zeros(pres.shape)
-    for k in range(len(pres)):
+#    for k in range(len(pres)):
+    for k in range(10):
         print(f'k={k}')
-        P_lcl, T_lcl = calc_lcl(theta[k], q_new[k])
         T_parcel = np.empty(pres.shape)
         Q_parcel = np.empty(pres.shape)
         RH = np.empty(pres.shape)
@@ -240,11 +240,9 @@ if __name__ == '__main__':
                     Q=('H', Q_parcel),
                     RH=('H', RH),
                     pres=('H', pres),
-                    PLCL=(P_lcl),
-                    TLCL=(T_lcl)
                 ),
                 coords=dict(
                     H=('H', H)
                 )
             )
-        ds.to_netcdf(f'parcel_entrain_lev{k}.nc')
+        ds.to_netcdf(f'parcel_entrain{ent}_lev{k}.nc')

@@ -8,7 +8,7 @@ num=count_num(infiles)
 'reinit'
 'ini'
 'open thermodynamic.ctl'
-'open parcel_entrain.ctl'
+'open parcel_entrain0.001.ctl'
 'set x 1'
 'set y 1'
 'set z 2 11.3135'
@@ -86,8 +86,8 @@ endwhile
 'set font 5'
 'legend r 'num' 'revexp' 'revcol
 'legend tr 1 ent_plume 2 2'
-'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_inic_low.png white'
-'gxprint /data/W.eddie/GoAmazon_VVM_Figs/the_inic_low.svg white'
+'gxprint the_inic_low.png white'
+'gxprint the_inic_low.svg white'
 
 function thetae(t,p,q)
     'Re=(1-'q')*287'

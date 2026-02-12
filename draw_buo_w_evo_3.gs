@@ -1,8 +1,8 @@
 *grads -a 0.5
-exp_tag='line58'
-name='RH-reduced'
-*sels='1 3 8'
-sels='7 8 9'
+exp_tag='ctrl'
+name='CTRL'
+sels='1 3 8'
+*sels='7 8 11'
 exps='0.06 0.16 0.29 0.36 0.51 0.66 0.83 0.99 1.17 1.35 1.55 1.76'
 rc=gsfallow('on')
 num=count_num(sels)
@@ -12,7 +12,7 @@ num=count_num(sels)
 line=sublin(result,2)
 xpage=subwrd(line,4)-1e-7
 ypage=subwrd(line,6)
-radi=3
+radi=2
 x.1=64.5-radi
 x.4=64.5+radi
 y.1=x.1
@@ -52,12 +52,8 @@ while(j<=num)
     'tvc=amean(maskout(th*(1+0.608*qv-qc-qi),flag),x='x.1',x='x.4',y='y.1',y='y.4')'
     say 'calculate environmental theta_v'
     'tve=amean(th*(1+0.608*qv-qc-qi),x=1,x=128,y=1,y=128)'
-*    'tve=amean(maskout(th*(1+0.608*qv-qc-qi),-flag),x=1,x=128,y=1,y=128)'
-*    'tve=amean(maskout(th*(1+0.608*qv-qc-qi),-flag),x='x.1-2*radi',x='x.4+2*radi',y='y.1-2*radi',y='y.4+2*radi')'
     say 'calculate buoyancy'
     'buo=9.80616*(tvc-tve)/tve'
-    say 'calculate 'radi'-km circular mean of cloud water'
-    'cldc=amean(maskout(qc+qi,flag),x='x.1',x='x.4',y='y.1',y='y.4')'
     'set dfile 2'
     say 'calculate 'radi'-km circular mean of vertical velocity'
     'wa=amean(maskout(w.2,flag),x='x.1',x='x.4',y='y.1',y='y.4')'
@@ -101,16 +97,9 @@ say    'set parea 'xp1' 'xp2' 'yp1' 'yp2
 *    'color -levs -3 -2 -1 -0.3 0.3 1 2 3 4 5 6 -kind black->black -gxout contour'
     'color -levs -4 -1 -0.25 0.25 1 4 16 -kind black->black -gxout contour'
     'd wa'
-    'set cthick 5'
-    'set rgb 99 30 180 30'
-    'set ccolor 99'
-    'set clab masked'
-*    'set clevs 1e-2 1e-1 1 2 5'
-    'set clevs 1e-2 1e-1 1 2 3 4'
-    'd cldc*1e3'
     'close 2'
     'close 1'
     j=j+1
 endwhile
-'gxprint /data/W.eddie/GoAmazon_VVM_Figs/Buo_evo_3_'exp_tag'_'radi'km.png white'
-'gxprint /data/W.eddie/GoAmazon_VVM_Figs/Buo_evo_3_'exp_tag'_'radi'km.svg white'
+'gxprint /data/W.eddie/GoAmazon_VVM_Figs/Buo_w_evo_3_'exp_tag'_'radi'km.png white'
+'gxprint /data/W.eddie/GoAmazon_VVM_Figs/Buo_w_evo_3_'exp_tag'_'radi'km.svg white'

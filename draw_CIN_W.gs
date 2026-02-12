@@ -1,8 +1,7 @@
-files1='Init_CIN_const Init_CIN_lin58 Init_CIN_ctrl'
-files2='W2CIN_const W2CIN_lin58 W2CIN_ctrl'
-exps='CONST LINEAR CTRL'
-colors='50 60 1'
-'set rgb 50 134 97 42'
+files1='Init_CIN_lin58 Init_CIN_ctrl'
+files2='W2CIN_lin58 W2CIN_ctrl'
+exps='RH-reduced CTRL'
+colors='60 1'
 'set rgb 60 0 125 0'
 path='/data/W.eddie/GoAmazon_VVM/'
 rc=gsfallow('on')

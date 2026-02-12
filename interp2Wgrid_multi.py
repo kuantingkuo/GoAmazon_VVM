@@ -2,10 +2,10 @@ import xarray as xr
 import numpy as np
 import sys
 
-case = '12'
-path = f'/data/W.eddie/VVM/DATA/test_bubble_const_{case}/archive/'
-dync = xr.open_dataset(f'{path}test_bubble_const_{case}.L.Dynamic-000006.nc').squeeze()
-thnc = xr.open_dataset(f'{path}test_bubble_const_{case}.L.Thermodynamic-000000.nc').squeeze()
+case = 'test_circle_Wmean_WL2_22'
+path = f'/data/W.eddie/VVM/DATA/{case}/archive/'
+dync = xr.open_mfdataset(f'{path}{case}.L.Dynamic-*.nc')
+thnc = xr.open_mfdataset(f'{path}{case}.L.Thermodynamic-*.nc')
 
 W = dync.w
 U = dync.u
@@ -34,7 +34,7 @@ th = th.assign_coords(lat=("lat", np.linspace(1, 256, 256, dtype=np.float64)))
 qv = qv.assign_coords(lon=("lon", np.linspace(1, 256, 256, dtype=np.float64)))
 qv = qv.assign_coords(lat=("lat", np.linspace(1, 256, 256, dtype=np.float64)))
 
-ds = xr.Dataset(coords={"lon": W.lon, "lat": W.lat, "lev": lev_new})
+ds = xr.Dataset(coords={"lon": W.lon, "lat": W.lat, "lev": lev_new, "time": W.time})
 U = U.pad(lon=(1, 0), mode='wrap')
 V = V.pad(lat=(1, 0), mode='wrap')
 U = U.assign_coords(lon=("lon", np.linspace(0.5, 256.5, 257, dtype=np.float64)))
